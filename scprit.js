@@ -47,7 +47,7 @@ function renderData(data) {
         tdEstoque.textContent = row[2]?.replace('.', ',') || '0'; // Substitui ponto por vírgula, se necessário
 
         const tdObs = document.createElement("td");
-        tdObs.textContent = row[3] || '';
+        tdObs.textContent = row[4] || '';
 
         tableRow.appendChild(tdCodigo);
         tableRow.appendChild(tdNome);
