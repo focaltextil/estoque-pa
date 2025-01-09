@@ -1,7 +1,7 @@
 // URL da planilha no Google Sheets no formato CSV
 const fileUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4eL_StwXZnZrikVfRucRYOO_stX6InEBMSNUIyF_e8r0aKN-ACp4u0QFVJ8JgyFGMu7ra1J7Fwaaw/pub?gid=905962302&single=true&output=csv';
 
-let allData = [];
+let allData = []; // Variável global para armazenar os dados
 
 // Função para carregar os dados da planilha
 async function loadExcelData() {
@@ -11,32 +11,22 @@ async function loadExcelData() {
             throw new Error(`Erro ao baixar a planilha: ${response.statusText}`);
         }
         const csvData = await response.text();
-        const workbook = XLSX.read(csvData, { type: 'string' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        jsonData.shift(); // Remove o cabeçalho
-        return jsonData;
+        // Processa o CSV lidando com aspas duplas
+        const rows = csvData
+            .split('\n') // Divide o CSV em linhas
+            .map(row => {
+                return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/) // Divide em colunas sem quebrar dentro de aspas
+                    .map(cell => cell.replace(/^"|"$/g, '').trim()); // Remove aspas duplas ao redor e espaços extras
+            });
+
+        rows.shift(); // Remove o cabeçalho
+        return rows;
     } catch (error) {
         console.error(`Erro ao carregar os dados: ${error.message}`);
         alert('Erro ao carregar os dados da planilha.');
         return [];
     }
-}
-
-// Função para formatar o estoque, mantendo a vírgula
-function formatEstoque(value) {
-    if (value === null || value === undefined || value === '') return '0';
-
-    let formattedValue = value.toString();
-
-    // Substitui pontos por vírgula, se for um número decimal
-    if (formattedValue.includes(',')) {
-        formattedValue = formattedValue.replace('.', ',');
-    }
-
-    return formattedValue;
 }
 
 // Função para renderizar os dados na tabela
@@ -54,10 +44,10 @@ function renderData(data) {
         tdNome.textContent = row[1] || 'Sem Nome';
 
         const tdEstoque = document.createElement("td");
-        tdEstoque.textContent = formatEstoque(row[2]); // Aplica a formatação correta
+        tdEstoque.textContent = row[2]?.replace('.', ',') || '0'; // Substitui ponto por vírgula, se necessário
 
         const tdObs = document.createElement("td");
-        tdObs.textContent = row[4] || '';
+        tdObs.textContent = row[3] || '';
 
         tableRow.appendChild(tdCodigo);
         tableRow.appendChild(tdNome);
