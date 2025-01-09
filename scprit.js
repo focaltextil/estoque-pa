@@ -57,7 +57,7 @@ function renderData(data) {
         tdEstoque.textContent = formatEstoque(row[2]); // Aplica a formatação correta
 
         const tdObs = document.createElement("td");
-        tdObs.textContent = row[3] || '';
+        tdObs.textContent = row[4] || '';
 
         tableRow.appendChild(tdCodigo);
         tableRow.appendChild(tdNome);
