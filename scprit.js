@@ -1,10 +1,17 @@
-
 const fileUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4eL_StwXZnZrikVfRucRYOO_stX6InEBMSNUIyF_e8r0aKN-ACp4u0QFVJ8JgyFGMu7ra1J7Fwaaw/pub?gid=905962302&single=true&output=csv';
 
 let allData = [];
 
 async function loadExcelData() {
     try {
+        // Verifica se os dados estão no sessionStorage
+        const savedData = sessionStorage.getItem('excelData');
+        if (savedData) {
+            // Se estiverem, retorna os dados salvos
+            return JSON.parse(savedData);
+        }
+
+        // Se não estiverem, baixa os dados da planilha
         const response = await fetch(fileUrl);
         if (!response.ok) {
             throw new Error(`Erro ao baixar a planilha: ${response.statusText}`);
@@ -14,11 +21,15 @@ async function loadExcelData() {
         const rows = csvData
             .split('\n')
             .map(row => {
-                return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/) 
+                return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
                     .map(cell => cell.replace(/^"|"$/g, '').trim());
             });
 
-        rows.shift();
+        rows.shift(); // Remove a primeira linha (cabeçalho)
+
+        // Salva os dados no sessionStorage para futuras consultas
+        sessionStorage.setItem('excelData', JSON.stringify(rows));
+
         return rows;
     } catch (error) {
         console.error(`Erro ao carregar os dados: ${error.message}`);
@@ -100,9 +111,11 @@ function renderData(data) {
 }
 
 async function init() {
+    // Carrega os dados e renderiza
     allData = await loadExcelData();
     renderData(allData);
 
+    // Adiciona o evento de busca
     document.getElementById('searchInput').addEventListener('input', function () {
         const searchText = this.value.trim();
         if (searchText) {
@@ -112,11 +125,13 @@ async function init() {
         }
     });
 
+    // Adiciona o evento de recarregar os dados
     document.getElementById('reload').addEventListener('click', async function () {
         allData = await loadExcelData();
         renderData(allData);
     });
 
+    // Adiciona o evento de redimensionamento da tela
     window.addEventListener("resize", updateView);
     updateView();
 }
