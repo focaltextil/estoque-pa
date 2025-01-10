@@ -1,9 +1,4 @@
 const fileUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4eL_StwXZnZrikVfRucRYOO_stX6InEBMSNUIyF_e8r0aKN-ACp4u0QFVJ8JgyFGMu7ra1J7Fwaaw/pub?gid=905962302&single=true&output=csv';
-// let reload_button = document.getElementById("#reload");
-
-
-
-
 
 let allData = [];
 
@@ -130,16 +125,12 @@ async function init() {
         }
     });
 
-
-    document.getElementById('reload').addEventListener('click', async function () {
-        allData = await loadExcelData();
-        sessionStorage.clear("excelData");
+    document.getElementById('reload').addEventListener('click', function () {
+        sessionStorage.clear();
         window.location.reload();
-        // alert("Teste");
-        renderData(allData);
     });
+    
 
-  
     window.addEventListener("resize", updateView);
     updateView();
 }
