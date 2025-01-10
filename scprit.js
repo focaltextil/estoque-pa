@@ -4,14 +4,14 @@ let allData = [];
 
 async function loadExcelData() {
     try {
-        // Verifica se os dados estão no sessionStorage
+       
         const savedData = sessionStorage.getItem('excelData');
         if (savedData) {
-            // Se estiverem, retorna os dados salvos
+          
             return JSON.parse(savedData);
         }
 
-        // Se não estiverem, baixa os dados da planilha
+      
         const response = await fetch(fileUrl);
         if (!response.ok) {
             throw new Error(`Erro ao baixar a planilha: ${response.statusText}`);
@@ -25,9 +25,9 @@ async function loadExcelData() {
                     .map(cell => cell.replace(/^"|"$/g, '').trim());
             });
 
-        rows.shift(); // Remove a primeira linha (cabeçalho)
+        rows.shift();
 
-        // Salva os dados no sessionStorage para futuras consultas
+   
         sessionStorage.setItem('excelData', JSON.stringify(rows));
 
         return rows;
@@ -105,17 +105,17 @@ function updateView() {
 }
 
 function renderData(data) {
-    renderTable(data);  // Atualiza a tabela
-    renderCards(data);  // Atualiza os cards
-    updateView();       // Alterna entre tabela e cards
+    renderTable(data);
+    renderCards(data); 
+    updateView(); 
 }
 
 async function init() {
-    // Carrega os dados e renderiza
+
     allData = await loadExcelData();
     renderData(allData);
 
-    // Adiciona o evento de busca
+
     document.getElementById('searchInput').addEventListener('input', function () {
         const searchText = this.value.trim();
         if (searchText) {
@@ -125,13 +125,13 @@ async function init() {
         }
     });
 
-    // Adiciona o evento de recarregar os dados
+
     document.getElementById('reload').addEventListener('click', async function () {
         allData = await loadExcelData();
         renderData(allData);
     });
 
-    // Adiciona o evento de redimensionamento da tela
+  
     window.addEventListener("resize", updateView);
     updateView();
 }
