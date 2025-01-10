@@ -143,11 +143,7 @@ table tbody tr:hover {
         padding: 2vw;
     }
 
-    #reload{
-        display: none;
-    }
-
-    .logo-class{
+    .logo-class img{
        display: none;
     }
 
