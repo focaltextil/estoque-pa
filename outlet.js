@@ -46,13 +46,16 @@ function renderTable(data) {
         const tableRow = document.createElement("tr");
 
         const tdCodigo = document.createElement("td");
-        tdCodigo.textContent = row[0] || 'Sem C�digo';
+        tdCodigo.textContent = row[0] || 'Sem Codigo';
 
         const tdNome = document.createElement("td");
         tdNome.textContent = row[1] || 'Sem Nome';
 
         const tdEstoque = document.createElement("td");
         tdEstoque.textContent = row[2]?.replace('.', ',') || '0';
+
+        const tdlocalizacao = document.createElement("td");
+        tdlocalizacao.textContent = row[3] || 'Sem Nome';
 
         const tdObs = document.createElement("td");
         tdObs.textContent = row[4] || '';
@@ -61,6 +64,8 @@ function renderTable(data) {
         tableRow.appendChild(tdNome);
         tableRow.appendChild(tdEstoque);
         tableRow.appendChild(tdObs);
+        tableRow.appendChild(tdlocalizacao);
+        
 
         renderContainer.appendChild(tableRow);
     });
@@ -80,6 +85,7 @@ function renderCards(data) {
                 <p><strong>Nome:</strong> ${row[1] || "Sem Nome"}</p>
                 <p><strong>Estoque:</strong> ${row[2]?.replace(".", ",") || "0"}</p>
                 <p><strong>Obs:</strong> ${row[4] || ""}</p>
+                <p><strong>Localização</strong> ${row[3] || ""}</p>
             </div>
         `;
 
