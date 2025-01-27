@@ -45,6 +45,11 @@ img{
 
 @media screen and (max-width: 768px) {
 
+    body{
+        height: 100%;
+    }
+
+
     img{
         width: 50vw;
     }
