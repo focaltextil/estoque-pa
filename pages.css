@@ -13,6 +13,7 @@
 body {
     background-color: var(--bg_cor);
     font-family: Arial, sans-serif;
+
 }
 
 header {
@@ -60,7 +61,8 @@ header .btns button {
 }
 
 .container {
-    margin: 0 auto;
+    margin: 1vw;
+    max-width: 1300px;
     padding: 1vw;
     background-color: #fff;
     border-radius: 0.5vw;
