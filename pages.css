@@ -98,6 +98,7 @@ table td {
 table th {
     background-color: var(--card_cor);
     color: var(--cor_texto);
+    
 }
 
 table tbody tr:nth-child(odd) {
